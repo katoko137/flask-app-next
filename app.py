@@ -5,7 +5,8 @@ app = Flask(__name__)
 
 # 仮のデータ
 players = []  # 参加者の名前を保持
-players_ready = []  # スタートボタンを押したユーザーのリスト
+start_button_pressed = False  # スタートボタンが押されたかどうか
+
 quiz_data = [
     {"question": "2 + 2 = 4 ?", "answer": "〇"},
     {"question": "5 - 3 = 2 ?", "answer": "〇"},
@@ -32,25 +33,21 @@ def waiting_room(username):
 
 @app.route("/start_game", methods=["POST"])
 def start_game():
-    # 参加者がスタートボタンを押す
-    username = request.form.get('username')
-    
-    # ユーザーが既にスタートボタンを押しているか確認
-    if username not in players_ready:
-        players_ready.append(username)
-    
-    # 全員がスタートボタンを押したか確認
-    if len(players_ready) == len(players):
-        return redirect("/game")
-    
-    # まだスタートボタンを押していない場合はそのまま待機
-    return redirect(f"/waiting_room/{username}")
+    # スタートボタンが押された状態をTrueに設定
+    global start_button_pressed
+    start_button_pressed = True
+    return "OK", 200
 
-@app.route("/game")
-def game():
+@app.route("/game/<string:username>")
+def game(username):
     # クイズの問題をランダムに取得
     question = random.choice(quiz_data)
-    return render_template("game.html", question=question)
+    return render_template("game.html", question=question, username=username)
+
+@app.route("/check_start_button")
+def check_start_button():
+    # スタートボタンが押されたかどうかの状態を返す
+    return {"start_button_pressed": start_button_pressed}
 
 if __name__ == "__main__":
     app.run(debug=True)
