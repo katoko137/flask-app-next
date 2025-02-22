@@ -5,6 +5,7 @@ app = Flask(__name__)
 
 # 仮のデータ
 players = []  # 参加者の名前を保持
+players_ready = []  # スタートボタンを押したユーザーのリスト
 quiz_data = [
     {"question": "2 + 2 = 4 ?", "answer": "〇"},
     {"question": "5 - 3 = 2 ?", "answer": "〇"},
@@ -29,10 +30,21 @@ def waiting_room(username):
     # 参加者のリストを表示
     return render_template("waiting_room.html", players=players, username=username)
 
-@app.route("/start_game")
+@app.route("/start_game", methods=["POST"])
 def start_game():
-    # ゲーム画面に遷移
-    return redirect("/game")
+    # 参加者がスタートボタンを押す
+    username = request.form.get('username')
+    
+    # ユーザーが既にスタートボタンを押しているか確認
+    if username not in players_ready:
+        players_ready.append(username)
+    
+    # 全員がスタートボタンを押したか確認
+    if len(players_ready) == len(players):
+        return redirect("/game")
+    
+    # まだスタートボタンを押していない場合はそのまま待機
+    return redirect(f"/waiting_room/{username}")
 
 @app.route("/game")
 def game():
