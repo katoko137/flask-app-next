@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ゲーム</title>
 </head>
 <body>
-    ゲーム画面
-    <h1>{{ username }}</h1>
+    <h1>クイズゲーム</h1>
+    <p>{{ question.question }}</p>
+    <form action="/game" method="post">
+        <button type="submit" name="answer" value="〇">〇</button>
+        <button type="submit" name="answer" value="×">×</button>
+    </form>
 </body>
 </html>
