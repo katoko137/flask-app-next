@@ -3,40 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-    <title>Document</title>
+    <title>待機室</title>
 </head>
 <body>
-    <h2>待機中...</h2>
-    <p>ゲームが開始されるまでお待ちください。</p>
-    <h3>現在の参加者</h3>
-    <ul id="players">
+    <h1>参加者リスト</h1>
+    <ul>
         {% for player in players %}
-        {% if player == username %}
-            <li>{{ player }} &lt;-- YOU </li>
-            <input type="text" id="username" value="{{ username }}" hidden>
-        {% else %}
-            <li>{{ player }}</li>
-        {% endif %}
+            <li>{{ player }}{% if player == username %} <-YOU{% endif %}</li>
         {% endfor %}
     </ul>
-    <button id="start">start</button>
-    <script>
-        const start_btn = document.getElementById("start");
-        const socket = io.connect('https://flask-app-rj6s.onrender.com');
-        start_btn.addEventListener("click", ()=>{
-            console.log("hoge");
-            // ゲームをスタート
-            socket.emit('start_game');
-        })
-
-        // サーバーからゲームスタートの通知を受けたとき
-        socket.on('start_game_f', ()=>{
-            // ユーザーの設定情報を送信する
-            // ここからやる！！！！！！！！！！！！！！！！！！！！！！！！
-            const username = document.getElementById("username").value;
-            window.location.href = `/game/${username}`;
-        })
-    </script>
+    <form action="/start_game" method="get">
+        <button type="submit">スタート</button>
+    </form>
 </body>
 </html>
