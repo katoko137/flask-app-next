@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>待機室</title>
+    <script>
+        // 1秒ごとにスタートボタンが押されたかをサーバーに確認する
+        setInterval(function() {
+            fetch('/check_start_button')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.start_button_pressed) {
+                        // スタートボタンが押された場合、全員をゲームページに遷移させる
+                        window.location.href = "/game/" + "{{ username }}";
+                    }
+                });
+        }, 1000);  // 1秒ごとに確認
+
+    </script>
 </head>
 <body>
     <h1>参加者リスト</h1>
@@ -12,6 +26,7 @@
             <li>{{ player }}{% if player == username %} <-YOU{% endif %}</li>
         {% endfor %}
     </ul>
+
     <form action="/start_game" method="post">
         <input type="hidden" name="username" value="{{ username }}">
         <button type="submit">スタート</button>
