@@ -12,11 +12,12 @@
                 .then(data => {
                     if (data.start_button_pressed) {
                         // スタートボタンが押された場合、全員をゲームページに遷移させる
-                        window.location.href = "/game/" + "{{ username }}";
+                        {% for player in players %}
+                            window.location.href = "/game/{{ player }}";
+                        {% endfor %}
                     }
                 });
         }, 1000);  // 1秒ごとに確認
-
     </script>
 </head>
 <body>
