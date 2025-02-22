@@ -12,7 +12,8 @@
             <li>{{ player }}{% if player == username %} <-YOU{% endif %}</li>
         {% endfor %}
     </ul>
-    <form action="/start_game" method="get">
+    <form action="/start_game" method="post">
+        <input type="hidden" name="username" value="{{ username }}">
         <button type="submit">スタート</button>
     </form>
 </body>
