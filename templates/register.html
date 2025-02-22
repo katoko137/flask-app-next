@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ユーザー名入力</title>
 </head>
 <body>
+    <h1>ユーザー名を入力してください</h1>
     <form action="/register" method="post">
-        <label for="username"></label>
-        <input name="username" type="text" placeholder="ユーザー名を入力してください">
-        <button type="submit">OK</button>
+        <label for="username">ユーザー名:</label>
+        <input type="text" id="username" name="username" required>
+        <button type="submit">登録</button>
     </form>
 </body>
 </html>
